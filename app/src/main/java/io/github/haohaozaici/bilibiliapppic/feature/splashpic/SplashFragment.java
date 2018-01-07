@@ -1,9 +1,9 @@
 package io.github.haohaozaici.bilibiliapppic.feature.splashpic;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TabLayout.Tab;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -44,7 +44,7 @@ public class SplashFragment extends Fragment {
 
   @Nullable
   @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.splash_pic_layout, container, false);
     ButterKnife.bind(this, view);
@@ -72,7 +72,7 @@ public class SplashFragment extends Fragment {
               mViewPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
                 @Override
                 public Fragment getItem(int position) {
-                  return PageFragment.newInstance();
+                  return PageFragment.newInstance(dataList.get(position).getImage());
                 }
 
                 @Override
@@ -84,7 +84,8 @@ public class SplashFragment extends Fragment {
                 @Override
                 public CharSequence getPageTitle(int position) {
                   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-                  String startTime = TimeUtils.millis2String(dataList.get(position).getStart_time() * 1000L, sdf);
+                  String startTime = TimeUtils
+                      .millis2String(dataList.get(position).getStart_time() * 1000L, sdf);
 
                   return startTime;
                 }
