@@ -28,7 +28,7 @@ android {
     }
 }
 
-final String supportLibVersion = '27.0.1'
+final String supportLibVersion = '27.0.2'
 final String arch = '1.0.0'
 final String retrofit = '2.3.0'
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.feature.splashpic.bean.SplashPicRes;
@@ -52,7 +53,7 @@ public class SplashFragment extends Fragment {
   }
 
   @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     MyRetrofit.getApiService().getSplashPic()
@@ -91,7 +92,7 @@ public class SplashFragment extends Fragment {
                 }
               });
               mTabLayout.setupWithViewPager(mViewPager);
-              TabLayoutUtil.reflex(mTabLayout);
+              TabLayoutUtil.reflex(mTabLayout, ConvertUtils.dp2px(10));
             }
 
           }

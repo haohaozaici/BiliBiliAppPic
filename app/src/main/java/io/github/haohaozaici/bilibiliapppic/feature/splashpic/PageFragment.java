@@ -52,11 +52,12 @@ public class PageFragment extends Fragment {
       Glide.with(this)
           .load(url)
           .into(mImageView);
+
+      mImageView.setOnClickListener(v -> {
+        PhotoActivity.start(v.getContext(), url);
+      });
     }
 
-    mImageView.setOnClickListener(v -> {
-      PhotoActivity.start(v.getContext(), url);
-    });
 
   }
 }

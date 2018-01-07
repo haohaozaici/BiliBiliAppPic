@@ -50,7 +50,7 @@ public class TabLayoutUtil {
   /**
    * 根据text自动获取宽度
    */
-  public static void reflex(final TabLayout tabLayout) {
+  public static void reflex(final TabLayout tabLayout, int widthMarginPx) {
     //了解源码得知 线的宽度是根据 tabView的宽度来设置的
     tabLayout.post(new Runnable() {
       @Override
@@ -58,8 +58,6 @@ public class TabLayoutUtil {
         try {
           //拿到tabLayout的mTabStrip属性
           LinearLayout mTabStrip = (LinearLayout) tabLayout.getChildAt(0);
-
-          int dp10 = ConvertUtils.dp2px(10);
 
           for (int i = 0; i < mTabStrip.getChildCount(); i++) {
             View tabView = mTabStrip.getChildAt(i);
@@ -84,8 +82,8 @@ public class TabLayoutUtil {
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView
                 .getLayoutParams();
             params.width = width;
-            params.leftMargin = dp10;
-            params.rightMargin = dp10;
+            params.leftMargin = widthMarginPx;
+            params.rightMargin = widthMarginPx;
             tabView.setLayoutParams(params);
 
             tabView.invalidate();
