@@ -6,6 +6,5 @@ package io.github.haohaozaici.bilibiliapppic;
 
 public class Constants {
 
-  public static final String API_HOST = "http://app.bilibili.com/";
 
 }

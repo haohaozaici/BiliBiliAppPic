@@ -1,4 +1,4 @@
-package io.github.haohaozaici.bilibiliapppic.feature.splashpic.bean;
+package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.bean;
 
 import java.util.List;
 

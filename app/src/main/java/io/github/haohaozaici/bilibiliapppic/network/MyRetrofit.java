@@ -34,7 +34,7 @@ public class MyRetrofit {
 
       sRetrofit = new Retrofit.Builder()
           .client(builder.build())
-          .baseUrl(Constants.API_HOST)
+          .baseUrl(APIService.BiliBili_API_HOST)
           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
           .addConverterFactory(GsonConverterFactory.create())
           .build();
@@ -43,7 +43,7 @@ public class MyRetrofit {
     return sRetrofit;
   }
 
-  public static APIService getApiService(){
+  public static APIService getApiService() {
     return getRetrofit().create(APIService.class);
   }
 }
