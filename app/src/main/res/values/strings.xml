@@ -1,8 +1,12 @@
 <resources>
-  <string name="app_name">BiliBiliAppPic</string>
+    <string name="app_name">BiliBiliAppPic</string>
 
-  <string name="navigation_drawer_open">Open navigation drawer</string>
-  <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-  <string name="action_settings">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="permission_storage">储存权限</string>
+    <string name="permission_storage_des">仅用于保存下载图片</string>
+    <string name="permission_network">网络权限</string>
+    <string name="permission_network_des">用于检查WiFi连接状态，仅在WiFi下保存图片</string>
 </resources>

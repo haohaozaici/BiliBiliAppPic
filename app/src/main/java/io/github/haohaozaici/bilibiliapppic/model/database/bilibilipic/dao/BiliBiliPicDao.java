@@ -8,7 +8,9 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
+
 import java.util.List;
 
 /**
@@ -18,18 +20,21 @@ import java.util.List;
 @Dao
 public interface BiliBiliPicDao {
 
-  @Insert(onConflict = REPLACE)
-  void saveOrReplace(BiliBiliAppPic pic);
+    @Insert(onConflict = REPLACE)
+    void saveOrReplace(BiliBiliAppPic pic);
 
-  @Update
-  void update(BiliBiliAppPic... pics);
+    @Update
+    void update(BiliBiliAppPic... pics);
 
-  @Delete
-  void delete(BiliBiliAppPic... pics);
+    @Delete
+    void delete(BiliBiliAppPic... pics);
 
-  @Query("SELECT * FROM BiliBiliAppPic WHERE id = :bilibiliId")
-  LiveData<BiliBiliAppPic> loadById(String bilibiliId);
+    @Query("SELECT * FROM BiliBiliAppPic WHERE id = :bilibiliId")
+    BiliBiliAppPic loadById(String bilibiliId);
 
-  @Query("SELECT * FROM BILIBILIAPPPIC")
-  LiveData<List<BiliBiliAppPic>> loadAll();
+    @Query("SELECT * FROM BILIBILIAPPPIC")
+    LiveData<List<BiliBiliAppPic>> loadAllLiveData();
+
+    @Query("SELECT * FROM BILIBILIAPPPIC")
+    List<BiliBiliAppPic> loadAll();
 }

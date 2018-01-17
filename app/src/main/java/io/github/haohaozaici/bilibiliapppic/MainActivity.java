@@ -1,5 +1,6 @@
 package io.github.haohaozaici.bilibiliapppic;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -9,9 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.yanzhenjie.permission.AndPermission;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.AppPicInfoFragment;
+import io.github.haohaozaici.bilibiliapppic.util.widget.PermissionDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,5 +65,20 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_container, AppPicInfoFragment.newInstance()).commit();
+
+//        handlePermission();
+
     }
+
+    private void handlePermission() {
+
+        if (!AndPermission.hasPermission(this, Manifest.permission_group.STORAGE)) {
+            PermissionDialog dialog = PermissionDialog.newInstance();
+            dialog.show(getSupportFragmentManager(), "");
+            dialog.setCancelable(false);
+        }
+
+    }
+
+
 }

@@ -69,7 +69,6 @@ public abstract class MyDatabase extends RoomDatabase {
             // Change the table name to the correct one
             database.execSQL("ALTER TABLE users_new RENAME TO users");
         }
-    }
-};
+    };
 
 }

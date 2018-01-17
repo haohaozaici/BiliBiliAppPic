@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="@dimen/permission_dialog_margin_start">
+
+
+    <ImageView
+        android:id="@+id/permission_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        tools:src="@drawable/permission_storage" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/permission_img"
+        android:layout_toStartOf="@+id/permission_button_area">
+
+        <TextView
+            android:id="@+id/permission_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center|start"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="储存权限" />
+
+        <TextView
+            android:id="@+id/permission_line1_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/permission_title"
+            android:layout_marginTop="4dp"
+            android:gravity="center|start"
+            android:maxLines="2"
+            android:textSize="12sp"
+            tools:text="仅用于保存下载图片" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/permission_button_area"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true">
+
+        <Button
+            android:id="@+id/permission_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            tools:background="@drawable/permission_button_denied_background"
+            tools:text="允许" />
+
+        <ImageView
+            android:id="@+id/permission_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:elevation="2dp"
+            android:padding="12dp"
+            tools:src="@drawable/permission_check" />
+
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="6dp"
+        android:layout_toEndOf="@+id/permission_img"
+        android:background="@color/grey_line" />
+
+
+</RelativeLayout>
+
