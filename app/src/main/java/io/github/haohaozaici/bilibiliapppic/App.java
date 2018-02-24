@@ -2,7 +2,9 @@ package io.github.haohaozaici.bilibiliapppic;
 
 import android.app.Application;
 import com.blankj.utilcode.util.Utils;
+import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.XLog;
+import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.BiliPicDatabase;
 
 /**
  * Created by haoyuan on 2018/1/7.
@@ -10,12 +12,15 @@ import com.elvishew.xlog.XLog;
 
 public class App extends Application {
 
+  public static BiliPicDatabase mBiliPicDatabase;
 
   @Override
   public void onCreate() {
     super.onCreate();
     Utils.init(this);
-    XLog.init();
+    XLog.init(new LogConfiguration.Builder().tag("bilibili_app_pic").build());
+
+    mBiliPicDatabase = BiliPicDatabase.getInstance(this);
 
   }
 

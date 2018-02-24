@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.yanzhenjie.permission.AndPermission;
-import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.AppPicInfoFragment;
+import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.PicInfoFragment;
 import io.github.haohaozaici.bilibiliapppic.util.widget.PermissionDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,10 +61,9 @@ public class MainActivity extends AppCompatActivity {
     });
 
     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    ft.replace(R.id.main_container, AppPicInfoFragment.newInstance()).commit();
+    ft.replace(R.id.main_container, PicInfoFragment.newInstance()).commit();
 
 //        handlePermission();
-
 
   }
 

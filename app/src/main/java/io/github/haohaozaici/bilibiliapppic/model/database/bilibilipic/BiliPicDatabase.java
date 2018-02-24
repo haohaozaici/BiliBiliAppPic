@@ -7,6 +7,8 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import com.elvishew.xlog.XLog;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.dao.PicDao;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
 
@@ -21,21 +23,26 @@ public abstract class BiliPicDatabase extends RoomDatabase {
 
   public abstract PicDao picDao();
 
-  public static BiliPicDatabase getInstance(final Context context) {
+  public synchronized static BiliPicDatabase getInstance(final Context context) {
+    if (sInstance == null) {
+      sInstance = Room.databaseBuilder(context, BiliPicDatabase.class, "database-name")
+          .addCallback(new Callback() {
+            @Override
+            public void onCreate(@NonNull SupportSQLiteDatabase db1) {
+              super.onCreate(db1);
+              XLog.d("BiliPicDatabase 创建成功");
+            }
 
-    return Room.databaseBuilder(context, BiliPicDatabase.class, "database-name")
-        .addCallback(new Callback() {
-          @Override
-          public void onCreate(@NonNull SupportSQLiteDatabase db1) {
-            super.onCreate(db1);
-          }
+            @Override
+            public void onOpen(@NonNull SupportSQLiteDatabase db1) {
+              super.onOpen(db1);
+              XLog.d("BiliPicDatabase 已装载");
 
-          @Override
-          public void onOpen(@NonNull SupportSQLiteDatabase db1) {
-            super.onOpen(db1);
-          }
-        })
-        .build();
+            }
+          })
+          .build();
+    }
+    return sInstance;
   }
 
   static final Migration MIGRATION_1_2 = new Migration(1, 2) {
