@@ -4,10 +4,14 @@ package io.github.haohaozaici.bilibiliapppic.network;
  * Created by haohao on 2017/11/9.
  */
 
-public class MyException {
+public class MyException extends Exception {
 
   private Throwable throwable;
   private String message;
+
+  public MyException() {
+    super();
+  }
 
   public MyException(Throwable throwable, String message) {
     this.throwable = throwable;
