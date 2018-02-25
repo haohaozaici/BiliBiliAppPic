@@ -7,15 +7,15 @@ import android.support.annotation.DrawableRes;
  */
 public class PermissionItem {
 
-    @DrawableRes int icon;
-    String title;
-    String description;
-    boolean allowed;
+  @DrawableRes int icon;
+  String title;
+  String description;
+  boolean allowed;
 
-    public PermissionItem(@DrawableRes int icon, String title, String description, boolean allowed) {
-        this.icon = icon;
-        this.title = title;
-        this.description = description;
-        this.allowed = allowed;
-    }
+  public PermissionItem(@DrawableRes int icon, String title, String description, boolean allowed) {
+    this.icon = icon;
+    this.title = title;
+    this.description = description;
+    this.allowed = allowed;
+  }
 }

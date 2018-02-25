@@ -20,8 +20,7 @@ public class HttpDns implements Dns {
   public List<InetAddress> lookup(@NonNull String hostname) throws UnknownHostException {
 
     // TODO: 2017/12/20 getHttpDns
-    String httpDns = "114.55.82.180";
-//    httpDns = "114.55.82.18";
+    String httpDns = "xxx";
 
     if (httpDns != null && !httpDns.equals("")) {
       InetAddress[] inetAddresses = InetAddress.getAllByName(httpDns);
