@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.BindView;
@@ -32,6 +33,7 @@ public class PicInfoFragment extends Fragment {
 
   private PicInfoViewModel model;
 
+
   public static PicInfoFragment newInstance() {
     Bundle args = new Bundle();
     PicInfoFragment fragment = new PicInfoFragment();
@@ -43,7 +45,7 @@ public class PicInfoFragment extends Fragment {
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.app_pic_info_layout, container, false);
     ButterKnife.bind(this, view);
     setHasOptionsMenu(true);
@@ -55,6 +57,7 @@ public class PicInfoFragment extends Fragment {
 
     return view;
   }
+
 
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -71,9 +74,19 @@ public class PicInfoFragment extends Fragment {
     });
   }
 
+
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
     super.onCreateOptionsMenu(menu, inflater);
+  }
+
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+    }
+
+    return super.onOptionsItemSelected(item);
   }
 }

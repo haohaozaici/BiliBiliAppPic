@@ -19,7 +19,7 @@ import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.Bi
 @Database(entities = {BiliBiliAppPic.class}, version = 1)
 public abstract class BiliPicDatabase extends RoomDatabase {
 
-  public static BiliPicDatabase sInstance;
+  private static BiliPicDatabase sInstance;
 
   public abstract PicDao picDao();
 

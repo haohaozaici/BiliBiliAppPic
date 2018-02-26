@@ -15,11 +15,19 @@ public class PicInfoViewModel extends ViewModel {
 
   private LiveData<List<BiliBiliAppPic>> mPicListLiveData = new MutableLiveData<>();
 
+
   public PicInfoViewModel() {
+    updatePicData();
+  }
+
+
+  public void updatePicData() {
     mPicListLiveData = App.mBiliPicDatabase.picDao().getAllPics();
   }
+
 
   public LiveData<List<BiliBiliAppPic>> getPicListLiveData() {
     return mPicListLiveData;
   }
+
 }
