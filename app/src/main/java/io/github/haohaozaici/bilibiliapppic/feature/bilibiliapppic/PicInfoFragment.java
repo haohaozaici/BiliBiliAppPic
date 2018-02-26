@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -45,14 +52,13 @@ public class PicInfoFragment extends Fragment {
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                           @Nullable Bundle savedInstanceState) {
+      @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.app_pic_info_layout, container, false);
     ButterKnife.bind(this, view);
     setHasOptionsMenu(true);
 
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
     mAdapter.register(BiliBiliAppPic.class, new BiliPicItemViewBinder());
-    mAdapter.setItems(mItems);
     mRecyclerView.setAdapter(mAdapter);
 
     return view;
@@ -72,19 +78,56 @@ public class PicInfoFragment extends Fragment {
       }
 
     });
+
+    Observable.create((ObservableOnSubscribe<Items>) e -> {
+      Items items = new Items();
+      for (int i = 0; i < 10; i++) {
+        items.add(new BiliBiliAppPic(100, "", "", "", "", false));
+      }
+
+      e.onNext(items);
+
+    }).subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Observer<Items>() {
+          @Override
+          public void onSubscribe(Disposable d) {
+
+          }
+
+          @Override
+          public void onNext(Items items) {
+            mAdapter.setItems(items);
+            mAdapter.notifyDataSetChanged();
+
+          }
+
+          @Override
+          public void onError(Throwable e) {
+
+          }
+
+          @Override
+          public void onComplete() {
+
+          }
+        });
   }
 
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
     super.onCreateOptionsMenu(menu, inflater);
+    inflater.inflate(R.menu.pic_info_menu, menu);
   }
 
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
+      case R.id.action_sync:
+        // TODO: 2018/2/26 加载数据
+
     }
 
     return super.onOptionsItemSelected(item);

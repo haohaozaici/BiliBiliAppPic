@@ -9,4 +9,7 @@
     <string name="permission_storage_des">仅用于保存下载图片</string>
     <string name="permission_network">网络权限</string>
     <string name="permission_network_des">用于检查WiFi连接状态，仅在WiFi下保存图片</string>
+
+    <string name="pic_info_sync">同步</string>
+
 </resources>
