@@ -36,7 +36,7 @@
       </intent-filter>
     </receiver>
 
-    <service android:name=".feature.bilibiliapppic.service.BilibiliPicDownloadService"/>
+    <service android:name=".feature.bilibiliapppic.service.BiliPicDownloadService"/>
   </application>
 
 </manifest>

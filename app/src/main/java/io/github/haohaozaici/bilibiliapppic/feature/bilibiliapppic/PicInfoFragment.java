@@ -81,7 +81,7 @@ public class PicInfoFragment extends Fragment {
 
     Observable.create((ObservableOnSubscribe<Items>) e -> {
       Items items = new Items();
-      for (int i = 0; i < 10; i++) {
+      for (int i = 0; i < 30; i++) {
         items.add(new BiliBiliAppPic(100, "", "", "", "", false));
       }
 

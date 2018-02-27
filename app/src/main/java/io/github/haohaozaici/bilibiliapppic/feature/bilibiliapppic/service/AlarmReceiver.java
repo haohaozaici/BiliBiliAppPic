@@ -33,7 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     // TODO: 2018/1/29 show notification and download pic
 
-    context.startService(new Intent(context, BilibiliPicDownloadService.class));
+    context.startService(new Intent(context, BiliPicDownloadService.class));
 
 //    PreferencesLoader loader = new PreferencesLoader(context);
 //    if (loader.getBoolean(R.string.action_notifiable, true)) {

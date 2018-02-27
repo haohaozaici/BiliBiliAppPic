@@ -22,7 +22,7 @@ public class PicInfoViewModel extends ViewModel {
 
 
   public void updatePicData() {
-    mPicListLiveData = App.mBiliPicDatabase.picDao().getAllPics();
+    mPicListLiveData = App.getBiliPicDatabase().picDao().getAllPicsLiveData();
   }
 
 

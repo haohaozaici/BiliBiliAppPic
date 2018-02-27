@@ -18,7 +18,10 @@ import java.util.List;
 public interface PicDao {
 
   @Query("SELECT * FROM bilibili_pics ORDER BY bilibiliId DESC")
-  LiveData<List<BiliBiliAppPic>> getAllPics();
+  List<BiliBiliAppPic> getAllPics();
+
+  @Query("SELECT * FROM bilibili_pics ORDER BY bilibiliId DESC")
+  LiveData<List<BiliBiliAppPic>> getAllPicsLiveData();
 
   @Query("SELECT * FROM bilibili_pics WHERE bilibiliId = :bilibiliId")
   BiliBiliAppPic getPicById(int bilibiliId);

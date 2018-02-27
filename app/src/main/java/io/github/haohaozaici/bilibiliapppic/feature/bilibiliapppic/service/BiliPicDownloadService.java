@@ -20,7 +20,7 @@ import org.reactivestreams.Subscription;
  * Created by haoyuan on 2018/1/8.
  */
 
-public class BilibiliPicDownloadService extends Service {
+public class BiliPicDownloadService extends Service {
 
   private static final String TAG = "BilibiliPicDownloadServ";
 

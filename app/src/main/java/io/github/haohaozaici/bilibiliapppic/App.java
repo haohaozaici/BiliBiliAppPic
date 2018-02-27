@@ -12,7 +12,7 @@ import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.BiliPicDa
 
 public class App extends Application {
 
-  public static BiliPicDatabase mBiliPicDatabase;
+  private static BiliPicDatabase mBiliPicDatabase;
 
   @Override
   public void onCreate() {
@@ -24,4 +24,7 @@ public class App extends Application {
 
   }
 
+  public static BiliPicDatabase getBiliPicDatabase() {
+    return mBiliPicDatabase;
+  }
 }
