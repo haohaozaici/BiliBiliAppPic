@@ -35,8 +35,8 @@
           android:id="@+id/bili_pic_item_id"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="id = 1116"
           android:textSize="@dimen/pic_info_item_text_size"
+          tools:text="id = 1116"
           />
 
 
@@ -60,8 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:gravity="center"
-            android:text="2018-2-26"
             android:textSize="@dimen/pic_info_item_text_size"
+            tools:text="2018-2-26"
             />
         </LinearLayout>
 
@@ -85,8 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:gravity="center"
-            android:text="888KB"
             android:textSize="@dimen/pic_info_item_text_size"
+            tools:text="888KB"
             />
         </LinearLayout>
 
@@ -99,8 +99,8 @@
             android:id="@+id/bili_pic_item_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="已下载"
             android:textSize="@dimen/pic_info_item_text_size"
+            tools:text="已下载"
             />
 
           <TextView

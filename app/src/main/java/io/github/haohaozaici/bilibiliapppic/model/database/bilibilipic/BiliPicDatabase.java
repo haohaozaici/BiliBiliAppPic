@@ -40,6 +40,7 @@ public abstract class BiliPicDatabase extends RoomDatabase {
 
             }
           })
+          .fallbackToDestructiveMigration()
           .build();
     }
     return sInstance;

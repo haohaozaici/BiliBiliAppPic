@@ -1,8 +1,11 @@
 package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 import io.github.haohaozaici.bilibiliapppic.App;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
 import java.util.List;
@@ -11,18 +14,21 @@ import java.util.List;
  * Created by haoyuan on 2018/2/24.
  */
 
-public class PicInfoViewModel extends ViewModel {
+public class PicInfoViewModel extends AndroidViewModel {
 
-  private LiveData<List<BiliBiliAppPic>> mPicListLiveData = new MutableLiveData<>();
+  private LiveData<List<BiliBiliAppPic>> mPicListLiveData;
+  private PicInfoRepo picInfoRepo;
 
 
-  public PicInfoViewModel() {
-    updatePicData();
+  public PicInfoViewModel(@NonNull Application application) {
+    super(application);
+    mPicListLiveData = App.getBiliPicDatabase().picDao().getAllPicsLiveData();
+    picInfoRepo = new PicInfoRepo(application.getApplicationContext());
   }
 
 
   public void updatePicData() {
-    mPicListLiveData = App.getBiliPicDatabase().picDao().getAllPicsLiveData();
+    picInfoRepo.syncPicInfo();
   }
 
 

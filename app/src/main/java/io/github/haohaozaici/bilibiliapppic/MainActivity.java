@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.yanzhenjie.permission.AndPermission;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.PicInfoFragment;
+import io.github.haohaozaici.bilibiliapppic.feature.notification.NotificationFragment;
 import io.github.haohaozaici.bilibiliapppic.util.widget.PermissionDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,10 +42,13 @@ public class MainActivity extends AppCompatActivity {
       // Handle navigation view item clicks here.
       int id = item.getItemId();
 
+      FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
       if (id == R.id.nav_camera) {
         // Handle the camera action
+        ft.replace(R.id.main_container, PicInfoFragment.newInstance()).commit();
       } else if (id == R.id.nav_gallery) {
-
+        ft.replace(R.id.main_container, NotificationFragment.newInstance()).commit();
       } else if (id == R.id.nav_slideshow) {
 
       } else if (id == R.id.nav_manage) {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
     ft.replace(R.id.main_container, PicInfoFragment.newInstance()).commit();
 
-//        handlePermission();
+    handlePermission();
 
   }
 

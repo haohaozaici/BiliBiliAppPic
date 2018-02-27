@@ -18,17 +18,20 @@ public class BiliBiliAppPic {
   private String endTime;
   private String imageUrl;
   private String linkedUrl;
+  private String size;
   private boolean download;
 
-  public BiliBiliAppPic(int bilibiliId, String startTime, String endTime, String imageUrl,
-      String linkedUrl, boolean download) {
+  public BiliBiliAppPic(int bilibiliId, String startTime, String endTime,
+      String imageUrl, String linkedUrl, String size, boolean download) {
     this.bilibiliId = bilibiliId;
     this.startTime = startTime;
     this.endTime = endTime;
     this.imageUrl = imageUrl;
     this.linkedUrl = linkedUrl;
+    this.size = size;
     this.download = download;
   }
+
 
   public int getId() {
     return id;
@@ -84,5 +87,13 @@ public class BiliBiliAppPic {
 
   public void setDownload(boolean download) {
     this.download = download;
+  }
+
+  public String getSize() {
+    return size;
+  }
+
+  public void setSize(String size) {
+    this.size = size;
   }
 }

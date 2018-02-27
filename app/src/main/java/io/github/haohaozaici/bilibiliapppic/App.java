@@ -2,6 +2,8 @@ package io.github.haohaozaici.bilibiliapppic;
 
 import android.app.Application;
 import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.XLog;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.BiliPicDatabase;

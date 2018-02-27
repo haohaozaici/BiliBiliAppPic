@@ -1,5 +1,6 @@
 package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.blankj.utilcode.util.SnackbarUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import io.github.haohaozaici.bilibiliapppic.GlideApp;
 import io.github.haohaozaici.bilibiliapppic.R;
+import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil;
+import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil.PicTotalBytes;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
 import me.drakeet.multitype.ItemViewBinder;
 
@@ -28,7 +35,28 @@ public class BiliPicItemViewBinder extends
   }
 
   @Override
-  protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull BiliBiliAppPic bIliPicItem) {
+  protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull BiliBiliAppPic biliPicItem) {
+
+    GlideApp.with(holder.pic)
+        .load(biliPicItem.getImageUrl())
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(holder.pic);
+
+    holder.id.setText("id = " + biliPicItem.getBilibiliId());
+    holder.start_time.setText(biliPicItem.getStartTime().substring(0, 10));
+    holder.size.setText(biliPicItem.getSize());
+    if (biliPicItem.isDownload()) {
+      holder.download.setText("已下载");
+    } else {
+      holder.download.setText("下载");
+      holder.download.setTextColor(
+          holder.download.getContext().getResources().getColor(R.color.colorPrimaryDark));
+    }
+
+    holder.detail.setOnClickListener(v -> {
+      // TODO: 2018/2/27 to detail web
+      SnackbarUtils.with(v).setMessage(biliPicItem.getLinkedUrl()).show();
+    });
 
   }
 
@@ -45,11 +73,6 @@ public class BiliPicItemViewBinder extends
     ViewHolder(View itemView) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-
-      detail.setOnClickListener(v -> {
-        // TODO: 2018/2/27 to detail web
-
-      });
     }
   }
 }
