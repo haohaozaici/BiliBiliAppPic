@@ -39,20 +39,16 @@ public class BiliPicItemViewBinder extends
 
     GlideApp.with(holder.pic)
         .load(biliPicItem.getImageUrl())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
         .into(holder.pic);
 
     holder.id.setText("id = " + biliPicItem.getBilibiliId());
     holder.start_time.setText(biliPicItem.getStartTime().substring(0, 10));
-    holder.size.setText(biliPicItem.getSize());
     if (biliPicItem.isDownload()) {
       holder.download.setText("已下载");
     } else {
       holder.download.setText("下载");
-      holder.download.setTextColor(
-          holder.download.getContext().getResources().getColor(R.color.colorPrimaryDark));
     }
-
     holder.detail.setOnClickListener(v -> {
       // TODO: 2018/2/27 to detail web
       SnackbarUtils.with(v).setMessage(biliPicItem.getLinkedUrl()).show();
@@ -65,7 +61,6 @@ public class BiliPicItemViewBinder extends
     @BindView(R.id.bili_pic_item_iv) ImageView pic;
     @BindView(R.id.bili_pic_item_id) TextView id;
     @BindView(R.id.bili_pic_item_start_time) TextView start_time;
-    @BindView(R.id.bili_pic_item_size_text) TextView size;
     @BindView(R.id.bili_pic_item_download) TextView download;
     @BindView(R.id.bili_pic_item_detail) TextView detail;
 

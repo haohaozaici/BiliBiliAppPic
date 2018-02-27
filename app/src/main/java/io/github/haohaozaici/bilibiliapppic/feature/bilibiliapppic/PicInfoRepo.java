@@ -7,19 +7,12 @@ import com.google.gson.Gson;
 import io.github.haohaozaici.bilibiliapppic.App;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.bean.BiliPicDatabaseInfo;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.bean.SplashPicRes;
-import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil;
-import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil.PicTotalBytes;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.dao.PicDao;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
 import io.github.haohaozaici.bilibiliapppic.network.MyRetrofit;
-import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 /**
@@ -53,18 +46,16 @@ public class PicInfoRepo {
               for (SplashPicRes.DataBean bilibiliPic : splashPicRes.getData()) {
                 BiliBiliAppPic existPic = mPicDao.getPicById(bilibiliPic.getId());
                 if (existPic == null) {
-                  BiliPicDownloadUtil downloadUtil = new BiliPicDownloadUtil(mContext);
-                  downloadUtil.getPicTotalBytes(bilibiliPic.getImage(), picSize -> {
-                    BiliBiliAppPic pic = new BiliBiliAppPic(bilibiliPic.getId(),
-                        TimeUtils.millis2String(bilibiliPic.getStart_time() * 1000L),
-                        TimeUtils.millis2String(bilibiliPic.getEnd_time() * 1000L),
-                        bilibiliPic.getImage(),
-                        bilibiliPic.getParam(),
-                        picSize,
-                        false);
-                    mPicDao.insert(pic);
-                    XLog.json(new Gson().toJson(pic));
-                  });
+                  BiliBiliAppPic pic = new BiliBiliAppPic(bilibiliPic.getId(),
+                      TimeUtils.millis2String(bilibiliPic.getStart_time() * 1000L),
+                      TimeUtils.millis2String(bilibiliPic.getEnd_time() * 1000L),
+                      bilibiliPic.getImage(),
+                      bilibiliPic.getParam(),
+                      null,
+                      false);
+                  mPicDao.insert(pic);
+                  XLog.d("---------同步最新图片信息成功---------");
+                  XLog.json(new Gson().toJson(pic));
                 }
               }
             }
@@ -72,7 +63,7 @@ public class PicInfoRepo {
 
           @Override
           public void onError(Throwable t) {
-            XLog.d("同步最新图片信息失败", t);
+            XLog.d("---------同步最新图片信息失败---------", t);
           }
 
           @Override

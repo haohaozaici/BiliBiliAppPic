@@ -65,7 +65,7 @@
             />
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
           android:id="@+id/bili_pic_item_size"
           android:layout_width="wrap_content"
           android:layout_height="18dp"
@@ -88,7 +88,7 @@
             android:textSize="@dimen/pic_info_item_text_size"
             tools:text="888KB"
             />
-        </LinearLayout>
+        </LinearLayout>-->
 
         <RelativeLayout
           android:layout_width="wrap_content"
