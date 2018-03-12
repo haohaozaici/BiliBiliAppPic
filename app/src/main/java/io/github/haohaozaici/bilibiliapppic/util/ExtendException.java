@@ -9,7 +9,6 @@ import java.io.IOException;
 
 public class ExtendException extends ProduceException {
 
-
   @Override
   public void abstractException() throws MyException, IOException {
     throw new IOException();

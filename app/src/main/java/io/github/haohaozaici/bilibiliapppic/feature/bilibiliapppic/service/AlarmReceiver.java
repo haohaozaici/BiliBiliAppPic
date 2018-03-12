@@ -43,7 +43,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     // TODO: 2018/1/29 sync remote data and show database info
     PicInfoRepo repo = new PicInfoRepo(context);
 
-
     Intent tapIntent = new Intent(context, MainActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, tapIntent, 0);
@@ -53,9 +52,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.pic_demo_120px))
         .setContentTitle("哔哩哔哩封面同步")
         .setContentText("已记录:100张  已下载:10张")
-//          .setStyle(new NotificationCompat.BigTextStyle()
-//              .bigText("已记录:100张  已下载:10张\n"
-//                  + "已记录:100张  已下载:10张"))
+        //          .setStyle(new NotificationCompat.BigTextStyle()
+        //              .bigText("已记录:100张  已下载:10张\n"
+        //                  + "已记录:100张  已下载:10张"))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
@@ -67,12 +66,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     context.startService(new Intent(context, BiliPicDownloadService.class));
 
-//    PreferencesLoader loader = new PreferencesLoader(context);
-//    if (loader.getBoolean(R.string.action_notifiable, true)) {
-//      HeadsUps.show(context, MainActivity.class,
-//          context.getString(R.string.heads_up_title),
-//          context.getString(R.string.heads_up_content),
-//          R.mipmap.ic_meizhi_150602, R.mipmap.ic_female, 123123);
-//    }
+    //    PreferencesLoader loader = new PreferencesLoader(context);
+    //    if (loader.getBoolean(R.string.action_notifiable, true)) {
+    //      HeadsUps.show(context, MainActivity.class,
+    //          context.getString(R.string.heads_up_title),
+    //          context.getString(R.string.heads_up_content),
+    //          R.mipmap.ic_meizhi_150602, R.mipmap.ic_female, 123123);
+    //    }
   }
 }

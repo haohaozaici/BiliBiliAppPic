@@ -6,5 +6,4 @@ package io.github.haohaozaici.bilibiliapppic;
 
 public class Constants {
 
-
 }

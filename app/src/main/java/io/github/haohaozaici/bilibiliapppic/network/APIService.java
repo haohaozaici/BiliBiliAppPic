@@ -12,7 +12,6 @@ public interface APIService {
 
   String BiliBili_API_HOST = "http://app.bilibili.com/";
 
-
   @GET("/x/splash?plat=0&width=1080&height=1920")
   Flowable<SplashPicRes> getSplashPic();
 

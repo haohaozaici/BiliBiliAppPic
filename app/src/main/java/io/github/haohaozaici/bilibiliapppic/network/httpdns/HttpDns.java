@@ -16,6 +16,7 @@ public class HttpDns implements Dns {
 
   private static final String TAG = "HttpDns";
 
+
   @Override
   public List<InetAddress> lookup(@NonNull String hostname) throws UnknownHostException {
 

@@ -1,7 +1,6 @@
 package io.github.haohaozaici.bilibiliapppic.network;
 
 import io.github.haohaozaici.bilibiliapppic.BuildConfig;
-import io.github.haohaozaici.bilibiliapppic.Constants;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -18,6 +17,7 @@ public class MyRetrofit {
 
   private static Retrofit sRetrofit;
 
+
   private static Retrofit getRetrofit() {
     if (sRetrofit == null) {
 
@@ -29,7 +29,7 @@ public class MyRetrofit {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(Level.BODY);
         builder.addInterceptor(interceptor);
-//        builder.addInterceptor(new LoggingInterceptor());
+        //        builder.addInterceptor(new LoggingInterceptor());
       }
 
       sRetrofit = new Retrofit.Builder()
@@ -42,6 +42,7 @@ public class MyRetrofit {
 
     return sRetrofit;
   }
+
 
   public static APIService getApiService() {
     return getRetrofit().create(APIService.class);

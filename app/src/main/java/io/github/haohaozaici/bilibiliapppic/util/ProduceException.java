@@ -13,9 +13,11 @@ public abstract class ProduceException {
     throw new IOException();
   }
 
+
   public void myException() throws MyException {
     throw new MyException();
   }
+
 
   public abstract void abstractException() throws MyException, IOException;
 

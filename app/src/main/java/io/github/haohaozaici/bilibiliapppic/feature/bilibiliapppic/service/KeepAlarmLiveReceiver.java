@@ -22,9 +22,7 @@ package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-
 import io.github.haohaozaici.bilibiliapppic.util.AlarmManagers;
-
 
 /**
  * Created by drakeet(http://drakeet.me)

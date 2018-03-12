@@ -12,10 +12,10 @@ public class MainViewModel extends AndroidViewModel {
 
   private MainRepo mRepo = new MainRepo();
 
+
   public MainViewModel(@NonNull Application application) {
     super(application);
 
   }
-
 
 }

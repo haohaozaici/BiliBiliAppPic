@@ -7,7 +7,6 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import com.elvishew.xlog.XLog;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.dao.PicDao;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;

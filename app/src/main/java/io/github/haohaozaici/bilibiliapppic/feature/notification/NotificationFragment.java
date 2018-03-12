@@ -20,7 +20,6 @@ import io.github.haohaozaici.bilibiliapppic.MainActivity;
 import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.AlarmReceiver;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadService;
-import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil;
 import java.util.UUID;
 
 /**
