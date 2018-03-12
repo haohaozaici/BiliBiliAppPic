@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.elvishew.xlog.XLog;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloadQueueSet;
@@ -15,10 +15,8 @@ import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
 import io.github.haohaozaici.bilibiliapppic.util.FileUtil;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,11 +97,15 @@ public class BiliPicDownloadUtil {
 
           @Override
           protected void completed(BaseDownloadTask task) {
+            XLog.d("图片%s下载完成  %s", appPic.getBilibiliId(), FileUtil.humanReadableByteCount(task.getSmallFileTotalBytes(), true));
+            XLog.d("已下载至%s", task.getPath());
             mBuilder.setContentText(String.format("图片%s下载完成  %s", appPic.getBilibiliId(), FileUtil.humanReadableByteCount(task.getSmallFileTotalBytes(), true)))
                 .setProgress(0, 0, false);
             // .addAction(0, "完成", null);
             notificationManager.notify(appPic.getBilibiliId(), mBuilder.build());
             ToastUtils.showShort("已下载至%s", PATH);
+
+            FileUtil.scanFile(mContext, task.getPath());
 
             Observable.just(appPic)
                 .subscribeOn(Schedulers.io())
