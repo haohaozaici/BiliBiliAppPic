@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +31,6 @@ public class PicInfoFragment extends Fragment {
   @BindView(R.id.pic_info_recycler_view) RecyclerView mRecyclerView;
 
   private MultiTypeAdapter mAdapter = new MultiTypeAdapter();
-  private Items mItems = new Items();
 
   private PicInfoViewModel model;
 
@@ -51,9 +51,9 @@ public class PicInfoFragment extends Fragment {
     ButterKnife.bind(this, view);
     setHasOptionsMenu(true);
 
-    mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+    // mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     mAdapter.register(BiliBiliAppPic.class, new BiliPicItemViewBinder());
-    mAdapter.setItems(mItems);
     mRecyclerView.setAdapter(mAdapter);
 
     return view;
@@ -68,7 +68,7 @@ public class PicInfoFragment extends Fragment {
 
     model.getPicListLiveData().observe(this, biliAppPics -> {
       if (biliAppPics != null && !biliAppPics.isEmpty()) {
-        mItems.addAll(biliAppPics);
+        mAdapter.setItems(biliAppPics);
         mAdapter.notifyDataSetChanged();
       }
     });

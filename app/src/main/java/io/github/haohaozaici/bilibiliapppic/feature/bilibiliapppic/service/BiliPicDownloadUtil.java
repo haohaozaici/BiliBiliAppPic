@@ -2,14 +2,23 @@ package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service;
 
 import android.content.Context;
 import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import com.blankj.utilcode.util.FileIOUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloadQueueSet;
 import com.liulishuo.filedownloader.FileDownloader;
+import io.github.haohaozaici.bilibiliapppic.App;
+import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
 import io.github.haohaozaici.bilibiliapppic.util.FileUtil;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,110 +28,109 @@ import java.util.List;
 
 public class BiliPicDownloadUtil {
 
+  private Context mContext;
+
   private static final String PATH =
       Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-          .getAbsolutePath() + File.separator + "BilibiliAppPic" + File.separator;
+          .getAbsolutePath() + File.separator + "biliSplash" + File.separator;
+
 
   public BiliPicDownloadUtil(Context context) {
+    mContext = context;
     FileDownloader.setup(context);
   }
 
-  public void getPicTotalBytes(String url, PicTotalBytes picTotalBytes) {
-    FileDownloader.getImpl().create(url)
-        .setPath(PATH)
-        .setListener(new FileDownloadListener() {
-          @Override
-          protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-          }
-
-          @Override
-          protected void connected(BaseDownloadTask task, String etag, boolean isContinue,
-              int soFarBytes, int totalBytes) {
-            task.pause();
-            picTotalBytes.picSize(FileUtil.humanReadableByteCount(totalBytes, true));
-          }
-
-          @Override
-          protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-          }
-
-          @Override
-          protected void blockComplete(BaseDownloadTask task) {
-          }
-
-          @Override
-          protected void retry(final BaseDownloadTask task, final Throwable ex,
-              final int retryingTimes, final int soFarBytes) {
-          }
-
-          @Override
-          protected void completed(BaseDownloadTask task) {
-          }
-
-          @Override
-          protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-          }
-
-          @Override
-          protected void error(BaseDownloadTask task, Throwable e) {
-          }
-
-          @Override
-          protected void warn(BaseDownloadTask task) {
-          }
-        }).start();
-
-  }
-
-  public interface PicTotalBytes {
-
-    void picSize(String picSize);
-  }
 
   //下载单个图片
-  public void downloadPic(String url) {
-    FileDownloader.getImpl().create(url)
-        .setPath(PATH)
+  public void downloadPic(BiliBiliAppPic appPic) {
+
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(mContext);
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
+    mBuilder.setContentTitle("封面图片下载")
+        .setContentText("正在连接")
+        .setSmallIcon(R.drawable.ic_cloud_circle_24dp)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+    mBuilder.setProgress(0, 0, true);
+    notificationManager.notify(appPic.getBilibiliId(), mBuilder.build());
+
+    String[] fileNames = appPic.getImageUrl().split("/");
+    String fileName = fileNames[fileNames.length - 1];
+
+    FileDownloader.getImpl().create(appPic.getImageUrl())
+        .setPath(PATH + fileName)
+        // .setWifiRequired(true)
         .setListener(new FileDownloadListener() {
           @Override
           protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
           }
 
+
           @Override
           protected void connected(BaseDownloadTask task, String etag, boolean isContinue,
-              int soFarBytes, int totalBytes) {
-            task.pause();
+                                   int soFarBytes, int totalBytes) {
+            int PROGRESS_MAX = 100;
+            int PROGRESS_CURRENT = 0;
+            mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
+            notificationManager.notify(appPic.getBilibiliId(), mBuilder.build());
           }
+
 
           @Override
           protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+            mBuilder.setContentText(String.format("%s/%s",
+                FileUtil.humanReadableByteCount(soFarBytes, true),
+                FileUtil.humanReadableByteCount(totalBytes, true)));
+            mBuilder.setProgress(totalBytes, soFarBytes, false);
+            notificationManager.notify(appPic.getBilibiliId(), mBuilder.build());
           }
+
 
           @Override
           protected void blockComplete(BaseDownloadTask task) {
           }
 
+
           @Override
           protected void retry(final BaseDownloadTask task, final Throwable ex,
-              final int retryingTimes, final int soFarBytes) {
+                               final int retryingTimes, final int soFarBytes) {
           }
+
 
           @Override
           protected void completed(BaseDownloadTask task) {
+            mBuilder.setContentText(String.format("图片%s下载完成  %s", appPic.getBilibiliId(), FileUtil.humanReadableByteCount(task.getSmallFileTotalBytes(), true)))
+                .setProgress(0, 0, false);
+            // .addAction(0, "完成", null);
+            notificationManager.notify(appPic.getBilibiliId(), mBuilder.build());
+            ToastUtils.showShort("已下载至%s", PATH);
+
+            Observable.just(appPic)
+                .subscribeOn(Schedulers.io())
+                .subscribe(pic -> {
+                  BiliBiliAppPic biliAppPic = App.getBiliPicDatabase().picDao().getPicById(pic.getBilibiliId());
+                  biliAppPic.setDownload(BiliBiliAppPic.DOWNLOAD);
+                  App.getBiliPicDatabase().picDao().insertOrReplace(biliAppPic);
+                });
+
           }
+
 
           @Override
           protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
           }
 
+
           @Override
           protected void error(BaseDownloadTask task, Throwable e) {
           }
+
 
           @Override
           protected void warn(BaseDownloadTask task) {
           }
         }).start();
+
   }
 
 
@@ -134,35 +142,43 @@ public class BiliPicDownloadUtil {
       protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
       }
 
+
       @Override
       protected void connected(BaseDownloadTask task, String etag, boolean isContinue,
-          int soFarBytes, int totalBytes) {
+                               int soFarBytes, int totalBytes) {
       }
+
 
       @Override
       protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
       }
 
+
       @Override
       protected void blockComplete(BaseDownloadTask task) {
       }
 
+
       @Override
       protected void retry(final BaseDownloadTask task, final Throwable ex, final int retryingTimes,
-          final int soFarBytes) {
+                           final int soFarBytes) {
       }
+
 
       @Override
       protected void completed(BaseDownloadTask task) {
       }
 
+
       @Override
       protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
       }
 
+
       @Override
       protected void error(BaseDownloadTask task, Throwable e) {
       }
+
 
       @Override
       protected void warn(BaseDownloadTask task) {
@@ -184,6 +200,5 @@ public class BiliPicDownloadUtil {
     queueSet.downloadTogether(tasks);
     queueSet.start();
   }
-
 
 }

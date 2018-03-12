@@ -23,11 +23,14 @@ public class PicInfoRepo {
 
   private Context mContext;
 
+
   public PicInfoRepo(Context context) {
     mContext = context;
   }
 
+
   private PicDao mPicDao = App.getBiliPicDatabase().picDao();
+
 
   //同步最新图片信息
   public void syncPicInfo() {
@@ -40,8 +43,10 @@ public class PicInfoRepo {
             s.request(1);
           }
 
+
           @Override
           public void onNext(SplashPicRes splashPicRes) {
+            XLog.d("---------同步最新图片信息成功---------");
             if (!splashPicRes.getData().isEmpty()) {
               for (SplashPicRes.DataBean bilibiliPic : splashPicRes.getData()) {
                 BiliBiliAppPic existPic = mPicDao.getPicById(bilibiliPic.getId());
@@ -52,19 +57,21 @@ public class PicInfoRepo {
                       bilibiliPic.getImage(),
                       bilibiliPic.getParam(),
                       null,
-                      false);
+                      0,
+                      0);
                   mPicDao.insert(pic);
-                  XLog.d("---------同步最新图片信息成功---------");
                   XLog.json(new Gson().toJson(pic));
                 }
               }
             }
           }
 
+
           @Override
           public void onError(Throwable t) {
             XLog.d("---------同步最新图片信息失败---------", t);
           }
+
 
           @Override
           public void onComplete() {
@@ -74,6 +81,7 @@ public class PicInfoRepo {
 
   }
 
+
   //获取数据库统计信息
   public BiliPicDatabaseInfo getBiliPicDataBaseInfo() {
     List<BiliBiliAppPic> biliPicList = mPicDao.getAllPics();
@@ -82,13 +90,12 @@ public class PicInfoRepo {
     picDatabaseInfo.allCount = biliPicList.size();
 
     for (BiliBiliAppPic pic : biliPicList) {
-      if (!pic.isDownload()) {
+      if (pic.getDownload() != BiliBiliAppPic.DOWNLOAD) {
         picDatabaseInfo.notDownload++;
       }
     }
 
     return picDatabaseInfo;
   }
-
 
 }

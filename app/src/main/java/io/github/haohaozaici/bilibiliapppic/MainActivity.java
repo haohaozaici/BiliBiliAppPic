@@ -1,25 +1,28 @@
 package io.github.haohaozaici.bilibiliapppic;
 
-import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.PicInfoFragment;
 import io.github.haohaozaici.bilibiliapppic.feature.notification.NotificationFragment;
-import io.github.haohaozaici.bilibiliapppic.util.widget.PermissionDialog;
+import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.BiliPicDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
   @BindView(R.id.drawer_layout)
   DrawerLayout mDrawerLayout;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -64,22 +67,33 @@ public class MainActivity extends AppCompatActivity {
 
     });
 
-    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    ft.replace(R.id.main_container, PicInfoFragment.newInstance()).commit();
-
-    handlePermission();
+    handlePermission(this);
 
   }
 
-  private void handlePermission() {
 
-    if (!AndPermission.hasPermission(this, Manifest.permission_group.STORAGE)) {
-      PermissionDialog dialog = PermissionDialog.newInstance();
-      dialog.show(getSupportFragmentManager(), "");
-      dialog.setCancelable(false);
-    }
+  public void handlePermission(Context context) {
+    AndPermission.with(context)
+        .permission(Permission.Group.STORAGE)
+        .rationale((context1, permissions, executor) -> {
+          new AlertDialog.Builder(context1)
+              .setMessage("请提供储存权限，用于保存图片")
+              .setPositiveButton("允许", (dialog, which) -> {
+                executor.execute();
+              })
+              .setNegativeButton("拒绝", ((dialog, which) -> {
+                executor.cancel();
+              }))
+              .create()
+              .show();
+        })
+        .onGranted(permissions -> {
+          App.mBiliPicDatabase = BiliPicDatabase.getInstance(context);
+          FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+          ft.replace(R.id.main_container, PicInfoFragment.newInstance()).commit();
+        })
+        .start();
 
   }
-
 
 }

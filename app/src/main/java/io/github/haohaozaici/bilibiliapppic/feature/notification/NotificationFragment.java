@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 import io.github.haohaozaici.bilibiliapppic.MainActivity;
 import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.AlarmReceiver;
+import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadService;
+import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil;
 import java.util.UUID;
 
 /**
@@ -30,18 +32,19 @@ public class NotificationFragment extends Fragment {
   public static final String CHANNEL_0 = "0";
   private String ACTION_ALARM = "io.github.haohaozaici.bilibiliapppic.alarm";
 
-
   @BindView(R.id.create_notification) TextView createNotification;
   @BindView(R.id.create_progress_notification) TextView create_progress_notification;
+
 
   public static NotificationFragment newInstance() {
     return new NotificationFragment();
   }
 
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
+                           @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.notification_layout, container, false);
     ButterKnife.bind(this, view);
 
@@ -56,9 +59,9 @@ public class NotificationFragment extends Fragment {
           .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.pic_demo_120px))
           .setContentTitle("哔哩哔哩封面同步")
           .setContentText("已记录:100张  已下载:10张")
-//          .setStyle(new NotificationCompat.BigTextStyle()
-//              .bigText("已记录:100张  已下载:10张\n"
-//                  + "已记录:100张  已下载:10张"))
+          //          .setStyle(new NotificationCompat.BigTextStyle()
+          //              .bigText("已记录:100张  已下载:10张\n"
+          //                  + "已记录:100张  已下载:10张"))
           .setPriority(NotificationCompat.PRIORITY_DEFAULT)
           .setContentIntent(pendingIntent)
           .setAutoCancel(true)
@@ -70,7 +73,7 @@ public class NotificationFragment extends Fragment {
 
       Intent snoozeIntent = new Intent(v.getContext(), AlarmReceiver.class);
       snoozeIntent.setAction(ACTION_ALARM);
-//      snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+      //      snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
       PendingIntent snoozePendingIntent =
           PendingIntent.getBroadcast(v.getContext(), 0, snoozeIntent, 0);
 
@@ -78,29 +81,34 @@ public class NotificationFragment extends Fragment {
 
     create_progress_notification.setOnClickListener(v -> {
 
-      NotificationManagerCompat notificationManager = NotificationManagerCompat.from(v.getContext());
-      NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(v.getContext());
-      mBuilder.setContentTitle("Picture Download")
-          .setContentText("Download in progress")
-          .setSmallIcon(R.drawable.ic_cloud_circle_24dp)
-          .setPriority(NotificationCompat.PRIORITY_LOW);
-
-      int PROGRESS_MAX = 100;
-      int PROGRESS_CURRENT = 0;
-      mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
-      notificationManager.notify(0, mBuilder.build());
-
-      // Do the job here that tracks the progress.
-      // Usually, this should be in a worker thread
-      // To show progress, update PROGRESS_CURRENT and update the notification with:
+      // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(v.getContext());
+      // NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(v.getContext());
+      // mBuilder.setContentTitle("Picture Download")
+      //     .setContentText("Download in progress")
+      //     .setSmallIcon(R.drawable.ic_cloud_circle_24dp)
+      //     .setPriority(NotificationCompat.PRIORITY_LOW);
+      //
+      // int PROGRESS_MAX = 100;
+      // int PROGRESS_CURRENT = 0;
       // mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
-      // notificationManager.notify(notificationId, mBuilder.build());
+      // notificationManager.notify(0, mBuilder.build());
+      //
+      // // Do the job here that tracks the progress.
+      // // Usually, this should be in a worker thread
+      // // To show progress, update PROGRESS_CURRENT and update the notification with:
+      // // mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
+      // // notificationManager.notify(notificationId, mBuilder.build());
+      //
+      // // When done, update the notification one more time to remove the progress bar
+      // mBuilder.setContentText("Download complete")
+      //     .setProgress(0,0,false);
+      // notificationManager.notify(0, mBuilder.build());
 
-      // When done, update the notification one more time to remove the progress bar
-      mBuilder.setContentText("Download complete")
-          .setProgress(0,0,false);
-      notificationManager.notify(0, mBuilder.build());
-
+      String url = "http://i0.hdslb.com/bfs/archive/72e6b191cce765053bdc77890853743faa6f9ef6.jpg";
+      Intent intent = new Intent(v.getContext(), BiliPicDownloadService.class);
+      intent.putExtra("id", 1131);
+      intent.putExtra("url", url);
+      v.getContext().startService(intent);
 
     });
 

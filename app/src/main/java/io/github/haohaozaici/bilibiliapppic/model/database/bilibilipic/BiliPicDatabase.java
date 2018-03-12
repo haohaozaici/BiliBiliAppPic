@@ -16,12 +16,14 @@ import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.Bi
  * Created by haoyuan on 2018/2/24.
  */
 
-@Database(entities = {BiliBiliAppPic.class}, version = 1)
+@Database(entities = { BiliBiliAppPic.class }, version = 1)
 public abstract class BiliPicDatabase extends RoomDatabase {
 
   private static BiliPicDatabase sInstance;
 
+
   public abstract PicDao picDao();
+
 
   public synchronized static BiliPicDatabase getInstance(final Context context) {
     if (sInstance == null) {
@@ -30,14 +32,14 @@ public abstract class BiliPicDatabase extends RoomDatabase {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db1) {
               super.onCreate(db1);
-              XLog.d("BiliPicDatabase 创建成功");
+              XLog.d("BiliPicDatabase 创建成功  version=%s", db1.getVersion());
             }
+
 
             @Override
             public void onOpen(@NonNull SupportSQLiteDatabase db1) {
               super.onOpen(db1);
-              XLog.d("BiliPicDatabase 已装载");
-
+              XLog.d("BiliPicDatabase 已装载  version=%s", db1.getVersion());
             }
           })
           .fallbackToDestructiveMigration()
@@ -45,6 +47,7 @@ public abstract class BiliPicDatabase extends RoomDatabase {
     }
     return sInstance;
   }
+
 
   static final Migration MIGRATION_1_2 = new Migration(1, 2) {
     @Override

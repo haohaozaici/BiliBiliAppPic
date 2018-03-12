@@ -20,7 +20,7 @@ public interface PicDao {
   @Query("SELECT * FROM bilibili_pics ORDER BY bilibiliId DESC")
   List<BiliBiliAppPic> getAllPics();
 
-  @Query("SELECT * FROM bilibili_pics ORDER BY bilibiliId DESC")
+  @Query("SELECT * FROM bilibili_pics where hide != 1 ORDER BY bilibiliId DESC")
   LiveData<List<BiliBiliAppPic>> getAllPicsLiveData();
 
   @Query("SELECT * FROM bilibili_pics WHERE bilibiliId = :bilibiliId")
