@@ -18,6 +18,7 @@ import io.github.haohaozaici.bilibiliapppic.GlideApp;
 import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadUtil;
 import io.github.haohaozaici.bilibiliapppic.model.database.bilibilipic.entity.BiliBiliAppPic;
+import io.github.haohaozaici.bilibiliapppic.util.ImageUtil;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
@@ -41,8 +42,8 @@ public class BiliPicItemViewBinder extends
   protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull BiliBiliAppPic biliPicItem) {
 
     GlideApp.with(holder.pic)
-        .load(biliPicItem.getImageUrl())
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .load(ImageUtil.getWebp(biliPicItem.getImageUrl(), 67, 120))
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
         .into(holder.pic);
 
     holder.id.setText("id = " + biliPicItem.getBilibiliId());
