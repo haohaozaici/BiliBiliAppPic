@@ -21,7 +21,7 @@ public class PicInfoViewModel extends AndroidViewModel {
   public PicInfoViewModel(@NonNull Application application) {
     super(application);
     mPicListLiveData = App.getBiliPicDatabase().picDao().getAllPicsLiveData();
-    picInfoRepo = new PicInfoRepo(application.getApplicationContext());
+    picInfoRepo = new PicInfoRepo();
   }
 
 

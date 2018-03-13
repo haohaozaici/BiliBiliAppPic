@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import io.github.haohaozaici.bilibiliapppic.MainActivity;
 import io.github.haohaozaici.bilibiliapppic.R;
 import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.AlarmReceiver;
-import io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.service.BiliPicDownloadService;
 import java.util.UUID;
 
 /**
@@ -80,34 +79,9 @@ public class NotificationFragment extends Fragment {
 
     create_progress_notification.setOnClickListener(v -> {
 
-      // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(v.getContext());
-      // NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(v.getContext());
-      // mBuilder.setContentTitle("Picture Download")
-      //     .setContentText("Download in progress")
-      //     .setSmallIcon(R.drawable.ic_cloud_circle_24dp)
-      //     .setPriority(NotificationCompat.PRIORITY_LOW);
-      //
-      // int PROGRESS_MAX = 100;
-      // int PROGRESS_CURRENT = 0;
-      // mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
-      // notificationManager.notify(0, mBuilder.build());
-      //
-      // // Do the job here that tracks the progress.
-      // // Usually, this should be in a worker thread
-      // // To show progress, update PROGRESS_CURRENT and update the notification with:
-      // // mBuilder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false);
-      // // notificationManager.notify(notificationId, mBuilder.build());
-      //
-      // // When done, update the notification one more time to remove the progress bar
-      // mBuilder.setContentText("Download complete")
-      //     .setProgress(0,0,false);
-      // notificationManager.notify(0, mBuilder.build());
-
-      String url = "http://i0.hdslb.com/bfs/archive/72e6b191cce765053bdc77890853743faa6f9ef6.jpg";
-      Intent intent = new Intent(v.getContext(), BiliPicDownloadService.class);
-      intent.putExtra("id", 1131);
-      intent.putExtra("url", url);
-      v.getContext().startService(intent);
+      Intent intent = new Intent("io.github.haohaozaici.bilibiliapppic.alarm");
+      intent.setClass(v.getContext(), AlarmReceiver.class);
+      v.getContext().sendBroadcast(intent);
 
     });
 

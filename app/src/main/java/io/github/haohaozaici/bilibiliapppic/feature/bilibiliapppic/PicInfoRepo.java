@@ -1,6 +1,5 @@
 package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic;
 
-import android.content.Context;
 import com.blankj.utilcode.util.TimeUtils;
 import com.elvishew.xlog.XLog;
 import com.google.gson.Gson;
@@ -21,21 +20,19 @@ import org.reactivestreams.Subscription;
 
 public class PicInfoRepo {
 
-  private Context mContext;
+  private PicDao mPicDao;
 
 
-  public PicInfoRepo(Context context) {
-    mContext = context;
+  public PicInfoRepo() {
+    mPicDao = App.getBiliPicDatabase().picDao();
   }
-
-
-  private PicDao mPicDao = App.getBiliPicDatabase().picDao();
 
 
   //同步最新图片信息
   public void syncPicInfo() {
 
-    MyRetrofit.getApiService().getSplashPic().subscribeOn(Schedulers.io())
+    MyRetrofit.getApiService().getSplashPic()
+        .subscribeOn(Schedulers.io())
         .observeOn(Schedulers.io())
         .subscribe(new FlowableSubscriber<SplashPicRes>() {
           @Override
@@ -46,24 +43,7 @@ public class PicInfoRepo {
 
           @Override
           public void onNext(SplashPicRes splashPicRes) {
-            XLog.d("---------同步最新图片信息成功---------");
-            if (!splashPicRes.getData().isEmpty()) {
-              for (SplashPicRes.DataBean bilibiliPic : splashPicRes.getData()) {
-                BiliBiliAppPic existPic = mPicDao.getPicById(bilibiliPic.getId());
-                if (existPic == null) {
-                  BiliBiliAppPic pic = new BiliBiliAppPic(bilibiliPic.getId(),
-                      TimeUtils.millis2String(bilibiliPic.getStart_time() * 1000L),
-                      TimeUtils.millis2String(bilibiliPic.getEnd_time() * 1000L),
-                      bilibiliPic.getImage(),
-                      bilibiliPic.getParam(),
-                      null,
-                      0,
-                      0);
-                  mPicDao.insert(pic);
-                  XLog.json(new Gson().toJson(pic));
-                }
-              }
-            }
+            savePicData(splashPicRes);
           }
 
 
@@ -82,19 +62,45 @@ public class PicInfoRepo {
   }
 
 
+  public void savePicData(SplashPicRes splashPicRes) {
+    XLog.d("---------同步最新图片信息成功---------");
+    if (!splashPicRes.getData().isEmpty()) {
+      for (SplashPicRes.DataBean biliPic : splashPicRes.getData()) {
+        BiliBiliAppPic existPic = mPicDao.getPicById(biliPic.getId());
+        if (existPic == null) {
+          BiliBiliAppPic pic = new BiliBiliAppPic(biliPic.getId(),
+              TimeUtils.millis2String(biliPic.getStart_time() * 1000L),
+              TimeUtils.millis2String(biliPic.getEnd_time() * 1000L),
+              biliPic.getImage(),
+              biliPic.getParam(),
+              null,
+              0,
+              0);
+          mPicDao.insert(pic);
+          XLog.json(new Gson().toJson(pic));
+        }
+      }
+    }
+  }
+
+
   //获取数据库统计信息
   public BiliPicDatabaseInfo getBiliPicDataBaseInfo() {
     List<BiliBiliAppPic> biliPicList = mPicDao.getAllPics();
 
     BiliPicDatabaseInfo picDatabaseInfo = new BiliPicDatabaseInfo();
-    picDatabaseInfo.allCount = biliPicList.size();
-
-    for (BiliBiliAppPic pic : biliPicList) {
-      if (pic.getDownload() != BiliBiliAppPic.DOWNLOAD) {
-        picDatabaseInfo.notDownload++;
+    if (!biliPicList.isEmpty()) {
+      picDatabaseInfo.allCount = biliPicList.size();
+      picDatabaseInfo.recentPicUrl = biliPicList.get(0).getImageUrl();
+      for (BiliBiliAppPic pic : biliPicList) {
+        if (pic.getDownload() == BiliBiliAppPic.DOWNLOAD) {
+          picDatabaseInfo.download++;
+        }
+        if (pic.getHide() == BiliBiliAppPic.HIDED) {
+          picDatabaseInfo.hide++;
+        }
       }
     }
-
     return picDatabaseInfo;
   }
 

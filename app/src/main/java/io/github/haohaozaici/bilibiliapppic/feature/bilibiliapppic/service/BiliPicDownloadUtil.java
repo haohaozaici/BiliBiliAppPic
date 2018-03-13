@@ -97,13 +97,18 @@ public class BiliPicDownloadUtil {
 
           @Override
           protected void completed(BaseDownloadTask task) {
-            XLog.d("图片%s下载完成  %s", appPic.getBilibiliId(), FileUtil.humanReadableByteCount(task.getSmallFileTotalBytes(), true));
-            XLog.d("已下载至%s", task.getPath());
-            mBuilder.setContentText(String.format("图片%s下载完成  %s", appPic.getBilibiliId(), FileUtil.humanReadableByteCount(task.getSmallFileTotalBytes(), true)))
-                .setProgress(0, 0, false);
-            // .addAction(0, "完成", null);
+            String completeLog = String.format("图片%s下载完成  %s",
+                appPic.getBilibiliId(),
+                FileUtil.humanReadableByteCount(task.getSmallFileTotalBytes(), true));
+            String locationLog = String.format("已下载至%s", PATH);
+            XLog.d(completeLog);
+            XLog.d(locationLog);
+
+            mBuilder.setContentText(completeLog)
+                .setProgress(0, 0, false)
+                .setAutoCancel(true);
             notificationManager.notify(appPic.getBilibiliId(), mBuilder.build());
-            ToastUtils.showShort("已下载至%s", PATH);
+            ToastUtils.showShort(locationLog);
 
             FileUtil.scanFile(mContext, task.getPath());
 

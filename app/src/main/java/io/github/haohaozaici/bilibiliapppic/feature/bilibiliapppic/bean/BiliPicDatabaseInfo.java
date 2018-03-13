@@ -7,6 +7,8 @@ package io.github.haohaozaici.bilibiliapppic.feature.bilibiliapppic.bean;
 public class BiliPicDatabaseInfo {
 
   public int allCount;
-  public int notDownload;
+  public int download;
+  public int hide;
+  public String recentPicUrl;
 
 }
